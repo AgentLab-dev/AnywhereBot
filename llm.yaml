@@ -1,4 +1,4 @@
-# AnywhereBot LLM settings. Edit this file to swap providers — no code changes.
+# Macha LLM settings. Edit this file to swap providers — no code changes.
 #
 # provider: auto | ollama | openrouter | groq | gemini | openai_compat
 #
@@ -45,7 +45,7 @@ timeout_s: 120
 # api_key_env: GROQ_API_KEY
 # Default base_url: https://api.groq.com/openai/v1
 # Also on the free/dev catalog: openai/gpt-oss-120b, qwen/qwen3.6-27b
-# List live ids: python -m anywherebot models
+# List live ids: macha models
 
 # --- Gemini (Google OpenAI-compatible endpoint, free tier) ---
 # provider: gemini

@@ -5,9 +5,9 @@ from pathlib import Path
 import pytest
 import yaml
 
-BOT_MD = """# AnywhereBot
+BOT_MD = """# Macha
 
-You are AnywhereBot, a portable assistant.
+You are Macha, a portable assistant.
 """
 
 LLM_AUTO = {

@@ -48,7 +48,7 @@ AUTO_ORDER = ("ollama", "openrouter", "groq", "gemini")
 KEY_HELP = """\
 No free LLM is reachable.
 
-AnywhereBot prefers live FREE models. Get one of these (no paid plan required):
+Macha prefers live FREE models. Get one of these (no paid plan required):
 
   1. Ollama (local, no API key)
      https://ollama.com
@@ -70,7 +70,7 @@ AnywhereBot prefers live FREE models. Get one of these (no paid plan required):
      default model: gemini-3.6-flash
 
 Copy .env.example to .env, set one key, then:
-  python -m anywherebot doctor
+  macha doctor
 
 Paid (do not use as the default): ox-alpha is now z-ai/glm-5.3-flash;
 moonshotai/kimi-k3 is also paid.

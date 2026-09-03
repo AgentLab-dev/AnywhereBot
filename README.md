@@ -1,10 +1,44 @@
-# AnywhereBot
+# Macha
 
-A portable standalone AI bot. Personality, skills, and LLM settings are plain files. Clone the folder, point `llm.yaml` at a local or free OpenAI-compatible model, and talk to it. No Cursor, no Vercel, no hosted account.
+A named personal assistant that lives in this folder. Download it, start chatting. `workspace/` is its small computer — files, a shell, and web fetch. Personality is `bot.md`. No Cursor, no Vercel, no hosted account.
 
-The bot's "computer" is `workspace/`: it can list, read, write, and edit files there, run a shell with that as cwd, and fetch public URLs.
+Default setup is **`provider: auto`**: live FREE hosted models, then local Ollama. This repo does not ship GGUF or safetensors weights.
 
-Default setup is **`provider: auto`**: live FREE hosted models, then local Ollama. No paid plan. This repo does not ship GGUF or safetensors weights.
+## Download
+
+```bash
+git clone https://github.com/AgentLab-dev/AnywhereBot.git
+cd AnywhereBot
+python3 -m venv .venv
+source .venv/bin/activate   # Windows: .venv\Scripts\activate
+pip install -e ".[dev]"
+```
+
+## Start (like opening a chat)
+
+```bash
+# Option A — local, no key
+ollama pull llama3.2   # if you use Ollama
+macha doctor
+macha chat
+
+# Option B — free cloud key
+cp .env.example .env   # set GROQ_API_KEY or OPENROUTER_API_KEY or GEMINI_API_KEY
+macha doctor
+macha chat
+
+# Option C — browser chat (closest to Grok Bot)
+macha serve            # http://127.0.0.1:8765
+```
+
+`anywherebot` still works as a compatibility alias (`python -m anywherebot` / `anywherebot chat`).
+
+## How this is like Grok Bot
+
+- You talk to a named assistant (**Macha**).
+- It has its own files (`workspace/`) and can run commands there.
+- Personality is `bot.md`; skills are markdown in `skills/`.
+- Difference: it runs on **your** computer (or a Pi/VPS), uses free/local models, and you clone the folder to take it anywhere.
 
 ## Free models (as of 2026-09-03)
 
@@ -17,7 +51,7 @@ Default setup is **`provider: auto`**: live FREE hosted models, then local Ollam
 | 3 | `GROQ_API_KEY` | `openai/gpt-oss-20b` | [console.groq.com](https://console.groq.com) |
 | 4 | `GEMINI_API_KEY` | `gemini-3.6-flash` | [Google AI Studio](https://aistudio.google.com/apikey) |
 
-If none work, `python -m anywherebot doctor` prints a one-screen “get a free key” note and exits `1` (no crash). If OpenRouter returns HTTP 429, chat falls through to Groq then Gemini when those keys exist.
+If none work, `macha doctor` prints a one-screen “get a free key” note and exits `1` (no crash). If OpenRouter returns HTTP 429, chat falls through to Groq then Gemini when those keys exist.
 
 **Paid — do not use as the default.** `ox-alpha` is now `z-ai/glm-5.3-flash` (paid). `moonshotai/kimi-k3` is paid.
 
@@ -42,8 +76,8 @@ Named `:free` slugs above advertised **tools/function calling** and $0 pricing o
 
 ```bash
 cp .env.example .env    # set one key if Ollama is not running
-python -m anywherebot doctor
-python -m anywherebot chat
+macha doctor
+macha chat
 ```
 
 ## Run locally with Ollama (no API key)
@@ -55,22 +89,19 @@ python -m anywherebot chat
 ollama pull llama3.2
 ```
 
-3. From this directory:
+3. From this directory (after Download above):
 
 ```bash
-python3 -m venv .venv
-source .venv/bin/activate   # Windows: .venv\Scripts\activate
-pip install -e ".[dev]"
-python -m anywherebot doctor
-python -m anywherebot chat
+macha doctor
+macha chat
 ```
 
 With `provider: auto`, a running Ollama wins even if cloud keys are also set.
 
 ```bash
-python -m anywherebot once "Create workspace/hello.txt with a haiku about USB sticks"
-python -m anywherebot models
-python -m anywherebot serve    # tiny HTML chat at http://127.0.0.1:8765
+macha once "Create workspace/hello.txt with a haiku about USB sticks"
+macha models
+macha serve    # tiny HTML chat at http://127.0.0.1:8765
 ```
 
 ## Pin Groq or Gemini
@@ -84,7 +115,7 @@ provider: groq
 model: openai/gpt-oss-20b
 ```
 
-If that id 404s, run `python -m anywherebot models` and paste a listed id. Other production ids: `openai/gpt-oss-120b`, `qwen/qwen3.6-27b`.
+If that id 404s, run `macha models` and paste a listed id. Other production ids: `openai/gpt-oss-120b`, `qwen/qwen3.6-27b`.
 
 **Gemini** — key from [Google AI Studio](https://aistudio.google.com/apikey). OpenAI-compatible endpoint:
 
@@ -107,7 +138,7 @@ cp .env.example .env          # optional; fill a cloud key if you are not using 
 docker compose up --build
 ```
 
-Open http://127.0.0.1:8765. `127.0.0.1` inside the container is not your laptop, so point the bot at Ollama explicitly:
+Open http://127.0.0.1:8765. `127.0.0.1` inside the container is not your laptop, so point Macha at Ollama explicitly:
 
 ```bash
 # Ollama on the host
@@ -121,7 +152,7 @@ For Groq in Docker, set `GROQ_API_KEY` in `.env`. Leave `ANYWHEREBOT_BASE_URL` e
 
 ## Copy the same bot to another machine
 
-The bot **is** the files:
+Macha **is** the files:
 
 | File | What it is |
 | --- | --- |
@@ -129,16 +160,18 @@ The bot **is** the files:
 | `skills/*.md` | Extra instructions |
 | `llm.yaml` | Provider, model, base URL |
 | `.env` | API keys (never commit) |
-| `workspace/` | The bot's disk |
+| `workspace/` | Macha's disk |
 
 ```bash
-git clone <this-repo>
-cd <this-repo>
+git clone https://github.com/AgentLab-dev/AnywhereBot.git
+cd AnywhereBot
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -e .
 cp .env.example .env          # only if you use a cloud key
 # edit llm.yaml only if you want to pin a provider
-pip install -e .
-python -m anywherebot doctor
-python -m anywherebot chat
+macha doctor
+macha chat
 ```
 
 Same git clone on a Pi or a cheap VPS is enough. Sessions are JSONL under `.anywherebot/sessions/` (gitignored).
@@ -154,13 +187,14 @@ Same git clone on a Pi or a cheap VPS is enough. Sessions are JSONL under `.anyw
 ## CLI
 
 ```
-python -m anywherebot              # interactive chat
-python -m anywherebot chat
-python -m anywherebot once "..."
-python -m anywherebot doctor
-python -m anywherebot models
-python -m anywherebot serve [--host 127.0.0.1] [--port 8765]
-anywherebot                        # same, after pip install
+macha              # interactive chat
+macha chat
+macha once "..."
+macha doctor
+macha models
+macha serve [--host 127.0.0.1] [--port 8765]
+python -m macha    # same
+anywherebot        # compatibility alias
 ```
 
 ## Tests

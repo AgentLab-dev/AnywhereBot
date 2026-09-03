@@ -210,7 +210,7 @@ class Toolbelt:
         own = self.fetch_client is None
         http = self.fetch_client or httpx.Client(timeout=20.0, follow_redirects=True)
         try:
-            response = http.get(url, headers={"User-Agent": "AnywhereBot/0.1"})
+            response = http.get(url, headers={"User-Agent": "Macha/0.1"})
             text = response.text
             header = f"HTTP {response.status_code} {url}\n\n"
             if len(text) > MAX_FETCH:

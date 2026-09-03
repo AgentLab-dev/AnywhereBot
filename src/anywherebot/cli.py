@@ -11,21 +11,24 @@ from anywherebot.config import BotConfig, ConfigError, find_root
 from anywherebot.llm import LLMClient, LLMError
 from anywherebot.providers import KEY_HELP, ProviderError
 
-USAGE = """AnywhereBot — portable folder-based assistant
+USAGE = """Macha — personal portable assistant
 
-  python -m anywherebot              interactive chat
-  python -m anywherebot chat
-  python -m anywherebot once "..."
-  python -m anywherebot doctor
-  python -m anywherebot models
-  python -m anywherebot serve [--host 127.0.0.1] [--port 8765]
+  macha              interactive chat
+  macha chat
+  macha once "..."
+  macha doctor
+  macha models
+  macha serve [--host 127.0.0.1] [--port 8765]
+
+  python -m macha    same
+  anywherebot        compatibility alias
 """
 
 
 def _build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        prog="anywherebot",
-        description="Portable standalone AI bot. Personality and LLM live in files.",
+        prog="macha",
+        description="Macha — personal portable assistant. Personality and LLM live in files.",
     )
     parser.add_argument(
         "--root",
@@ -70,7 +73,7 @@ def cmd_doctor(args: argparse.Namespace) -> int:
         return 1
 
     llm = config.llm
-    print("AnywhereBot free-model path")
+    print("Macha free-model path")
     print("  1. Ollama on localhost:11434 (or ANYWHEREBOT_BASE_URL)")
     print("  2. OPENROUTER_API_KEY → openrouter/free  (or a pinned :free slug)")
     print("  3. GROQ_API_KEY → openai/gpt-oss-20b")
@@ -118,7 +121,7 @@ def cmd_once(args: argparse.Namespace) -> int:
 def cmd_chat(args: argparse.Namespace) -> int:
     config = _load(args)
     agent = Agent(config)
-    print("AnywhereBot  ·  " + config.llm.describe().split("\n")[0])
+    print("Macha  ·  " + config.llm.describe().split("\n")[0])
     print("Type /reset to start a new session, /exit to quit.")
     while True:
         try:
@@ -182,5 +185,5 @@ def main(argv: list[str] | None = None) -> int:
         print()
         return 130
     except Exception as exc:  # noqa: BLE001 — CLI must not crash
-        print(f"anywherebot: {exc}", file=sys.stderr)
+        print(f"macha: {exc}", file=sys.stderr)
         return 1

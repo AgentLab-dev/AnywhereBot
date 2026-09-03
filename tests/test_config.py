@@ -16,7 +16,7 @@ def test_load_auto_openrouter(bot_root: Path) -> None:
     assert config.llm.provider == "openrouter"
     assert config.llm.model == "openrouter/free"
     prompt = config.system_prompt()
-    assert "AnywhereBot" in prompt
+    assert "Macha" in prompt
     assert "free-models.md" in prompt
     assert "Use the free model auto selected." in prompt
     assert "README.md" not in prompt

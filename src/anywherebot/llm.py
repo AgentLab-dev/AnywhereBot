@@ -45,7 +45,7 @@ def _headers(settings: LLMSettings) -> dict[str, str]:
     }
     if "openrouter.ai" in settings.base_url:
         headers["HTTP-Referer"] = "https://github.com/AgentLab-dev/AnywhereBot"
-        headers["X-Title"] = "AnywhereBot"
+        headers["X-Title"] = "Macha"
     return headers
 
 
