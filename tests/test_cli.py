@@ -55,9 +55,10 @@ def test_doctor_ok_openrouter(
             request=request,
         )
 
+    real_client = httpx.Client
     monkeypatch.setattr(
         "anywherebot.llm.httpx.Client",
-        lambda *a, **k: httpx.Client(transport=httpx.MockTransport(handler)),
+        lambda *a, **k: real_client(transport=httpx.MockTransport(handler)),
     )
     code = main(["--root", str(bot_root), "doctor"])
     out = capsys.readouterr().out
@@ -121,9 +122,10 @@ def test_models_lists_ids(
             request=request,
         )
 
+    real_client = httpx.Client
     monkeypatch.setattr(
         "anywherebot.llm.httpx.Client",
-        lambda *a, **k: httpx.Client(transport=httpx.MockTransport(handler)),
+        lambda *a, **k: real_client(transport=httpx.MockTransport(handler)),
     )
     code = main(["--root", str(bot_root), "models"])
     out = capsys.readouterr().out
