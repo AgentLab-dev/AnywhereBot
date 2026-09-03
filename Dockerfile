@@ -12,4 +12,4 @@ RUN pip install --no-cache-dir .
 EXPOSE 8765
 
 # Interactive `chat` needs a TTY. The local HTML UI is the Docker default.
-CMD ["python", "-m", "anywherebot", "serve", "--host", "0.0.0.0", "--port", "8765"]
+CMD ["python", "-m", "macha", "serve", "--host", "0.0.0.0", "--port", "8765"]

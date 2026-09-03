@@ -1,7 +1,7 @@
 [project]
 name = "anywherebot"
 version = "0.1.0"
-description = "A portable standalone AI bot you can clone and run anywhere."
+description = "Macha — a personal portable assistant you can clone and run anywhere."
 readme = "README.md"
 license = { text = "MIT" }
 requires-python = ">=3.11"
@@ -24,14 +24,15 @@ dependencies = [
 dev = ["pytest>=8.0"]
 
 [project.scripts]
-anywherebot = "anywherebot.__main__:main"
+macha = "anywherebot.cli:main"
+anywherebot = "anywherebot.cli:main"
 
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/anywherebot"]
+packages = ["src/anywherebot", "src/macha"]
 
 [tool.hatch.build.targets.wheel.sources]
 "src" = ""

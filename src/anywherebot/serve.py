@@ -16,7 +16,7 @@ PAGE = """<!doctype html>
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>AnywhereBot</title>
+  <title>Macha</title>
   <style>
     :root { color-scheme: dark; }
     body { font: 16px/1.4 system-ui, sans-serif; margin: 0; background: #111; color: #eee; }
@@ -33,11 +33,11 @@ PAGE = """<!doctype html>
 </head>
 <body>
 <main>
-  <h1>AnywhereBot</h1>
+  <h1>Macha</h1>
   <div class="meta" id="meta"></div>
   <div id="log"></div>
   <form id="f">
-    <textarea id="q" placeholder="Ask the bot…" autofocus></textarea>
+    <textarea id="q" placeholder="Ask Macha…" autofocus></textarea>
     <button type="submit">Send</button>
   </form>
 </main>
@@ -73,7 +73,7 @@ function escapeHtml(s) {
 
 
 class _Handler(BaseHTTPRequestHandler):
-    server_version = "AnywhereBot/0.1"
+    server_version = "Macha/0.1"
 
     def __init__(self, agent: Agent, *args: Any, **kwargs: Any) -> None:
         self.agent = agent
@@ -142,7 +142,7 @@ def serve(config: BotConfig, host: str = "127.0.0.1", port: int = 8765) -> None:
     agent = Agent(config)
     handler = partial(_Handler, agent)
     httpd = ThreadingHTTPServer((host, port), handler)
-    print(f"AnywhereBot chat: http://{host}:{port}")
+    print(f"Macha chat: http://{host}:{port}")
     print(config.llm.describe())
     try:
         httpd.serve_forever()

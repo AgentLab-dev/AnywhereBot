@@ -1,3 +1,3 @@
-"""AnywhereBot — a portable file-based AI bot runtime."""
+"""Macha — a personal portable assistant (package: anywherebot)."""
 
 __version__ = "0.1.0"

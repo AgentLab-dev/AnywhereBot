@@ -7,6 +7,7 @@ import pytest
 
 from anywherebot.cli import main
 from anywherebot.providers import KEY_HELP
+from anywherebot.serve import PAGE
 
 _CLEAR = (
     "OPENROUTER_API_KEY",
@@ -68,6 +69,7 @@ def test_doctor_ok_openrouter(
     assert "OPENROUTER_API_KEY" in out
     assert "Ollama on localhost:11434" in out
     assert "kimi-k3" in out
+    assert "Macha free-model path" in out
 
 
 def test_doctor_does_not_crash_on_unexpected_error(
@@ -135,4 +137,19 @@ def test_models_lists_ids(
 
 def test_help_exits_zero(capsys: pytest.CaptureFixture[str]) -> None:
     assert main(["--help"]) == 0
-    assert "doctor" in capsys.readouterr().out
+    out = capsys.readouterr().out
+    assert "doctor" in out
+    assert "Macha" in out
+
+
+def test_macha_module_calls_same_cli(capsys: pytest.CaptureFixture[str]) -> None:
+    from macha.__main__ import main as macha_main
+
+    assert macha_main(["--help"]) == 0
+    assert "Macha" in capsys.readouterr().out
+
+
+def test_serve_page_is_macha() -> None:
+    assert "<title>Macha</title>" in PAGE
+    assert "<h1>Macha</h1>" in PAGE
+    assert "AnywhereBot" not in PAGE

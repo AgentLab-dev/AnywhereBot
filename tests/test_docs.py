@@ -17,12 +17,32 @@ def test_readme_has_free_models_section() -> None:
     assert "ox-alpha" in text
 
 
-def test_bot_md_stays_general_and_mentions_free_model() -> None:
+def test_readme_leads_with_macha_download_and_start() -> None:
+    text = (REPO / "README.md").read_text(encoding="utf-8")
+    assert text.lstrip().startswith("# Macha")
+    assert "git clone https://github.com/AgentLab-dev/AnywhereBot.git" in text
+    assert "pip install -e \".[dev]\"" in text
+    assert "macha doctor" in text
+    assert "macha chat" in text
+    assert "macha serve" in text
+    assert "How this is like Grok Bot" in text
+    assert "workspace/" in text
+    assert "bot.md" in text
+    # Repo stays AnywhereBot; the bot's name is Macha.
+    clone_idx = text.index("git clone https://github.com/AgentLab-dev/AnywhereBot.git")
+    start_idx = text.index("macha chat")
+    assert clone_idx < start_idx
+
+
+def test_bot_md_is_macha_and_mentions_free_model() -> None:
     text = (REPO / "bot.md").read_text(encoding="utf-8")
-    assert "AnywhereBot" in text
+    assert "Macha" in text
+    assert "AnywhereBot" not in text
     assert "free" in text.lower()
     assert "ox-alpha" in text
     assert "kimi-k3" in text
+    assert "workspace/" in text
+    assert "bot.md" in text
 
 
 def test_gitignore_blocks_weight_dumps() -> None:
@@ -37,6 +57,12 @@ def test_gitignore_blocks_weight_dumps() -> None:
         if not skip.intersection(path.parts)
     ]
     assert leaked == []
+
+
+def test_pyproject_exposes_macha_and_anywherebot_scripts() -> None:
+    text = (REPO / "pyproject.toml").read_text(encoding="utf-8")
+    assert 'macha = "anywherebot.cli:main"' in text
+    assert 'anywherebot = "anywherebot.cli:main"' in text
 
 
 def test_no_secrets_in_tree() -> None:

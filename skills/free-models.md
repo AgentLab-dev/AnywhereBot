@@ -1,6 +1,6 @@
 # Free models (as of 2026-09-03)
 
-AnywhereBot defaults to live free APIs plus local Ollama. It does not ship model weight files (no GGUF, no safetensors).
+Macha defaults to live free APIs plus local Ollama. It does not ship model weight files (no GGUF, no safetensors).
 
 ## What `provider: auto` picks
 
@@ -8,7 +8,7 @@ AnywhereBot defaults to live free APIs plus local Ollama. It does not ship model
 2. **OpenRouter** if `OPENROUTER_API_KEY` is set — `openrouter/free` (a $0 router that picks a current free model).
 3. **Groq** if `GROQ_API_KEY` is set — `openai/gpt-oss-20b` (tool-capable). `llama-3.3-70b-versatile` was shut down 2026-08-16.
 4. **Gemini** if `GEMINI_API_KEY` is set — `gemini-3.6-flash` via Google's OpenAI-compatible endpoint.
-5. If none of those work, `python -m anywherebot doctor` prints how to get a free key and exits non-zero.
+5. If none of those work, `macha doctor` prints how to get a free key and exits non-zero.
 
 If OpenRouter returns HTTP 429, chat may fall through to Groq then Gemini when those keys exist.
 

@@ -71,7 +71,7 @@ def test_chat_parses_tool_calls() -> None:
     assert response.tool_calls[0].arguments == {"path": "."}
     req = transport.calls[0]
     assert req.headers["Authorization"] == "Bearer k"
-    assert req.headers["X-Title"] == "AnywhereBot"
+    assert req.headers["X-Title"] == "Macha"
 
 
 def test_429_falls_through_to_groq() -> None:
