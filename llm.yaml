@@ -1,39 +1,57 @@
 # AnywhereBot LLM settings. Edit this file to swap providers — no code changes.
 #
-# provider: ollama | groq | gemini | openrouter | openai_compat | auto
+# provider: auto | ollama | openrouter | groq | gemini | openai_compat
 #
-# auto resolution:
-#   1. Ollama if http://127.0.0.1:11434 answers
-#   2. else first set env key among GROQ_API_KEY, GEMINI_API_KEY, OPENROUTER_API_KEY
+# auto (default — live FREE models, 2026-09-03):
+#   1. Ollama if http://127.0.0.1:11434 answers (llama3.2 or whatever is pulled)
+#   2. else OPENROUTER_API_KEY → openrouter/free  ($0 router; picks a free model)
+#   3. else GROQ_API_KEY → openai/gpt-oss-20b
+#   4. else GEMINI_API_KEY → gemini-3.6-flash
+#   If OpenRouter returns 429, chat falls through to Groq then Gemini when those
+#   keys exist. doctor exits non-zero and prints how to get a free key if none work.
+#
+# Paid — do not use as the default:
+#   ox-alpha is now z-ai/glm-5.3-flash (paid)
+#   moonshotai/kimi-k3 is paid
 #
 # Optional env overrides (useful in Docker):
 #   ANYWHEREBOT_PROVIDER, ANYWHEREBOT_MODEL, ANYWHEREBOT_BASE_URL, ANYWHEREBOT_API_KEY_ENV
 
-provider: ollama
-model: llama3.2
-base_url: http://127.0.0.1:11434/v1
+provider: auto
+# Leave model unset so each free backend uses its own default.
+# model: openrouter/free
 timeout_s: 120
 
-# --- Groq (free/fast cloud; tool-capable) ---
+# --- Pin a named OpenRouter :free slug (tools/function calling as of 2026-09-03) ---
+# provider: openrouter
+# model: openrouter/free
+# model: minimax/minimax-m3:free
+# model: nvidia/nemotron-3-ultra-550b-a55b:free
+# model: z-ai/glm-5.2:free
+# model: thinkingmachines/inkling:free
+# model: poolside/laguna-s-2.1:free
+# model: cohere/north-mini-code:free
+# api_key_env: OPENROUTER_API_KEY
+# Default base_url: https://openrouter.ai/api/v1
+
+# --- Ollama (local, no key) ---
+# provider: ollama
+# model: llama3.2
+# base_url: http://127.0.0.1:11434/v1
+
+# --- Groq (free tier; llama-3.3-70b-versatile shut down 2026-08-16) ---
 # provider: groq
 # model: openai/gpt-oss-20b
 # api_key_env: GROQ_API_KEY
 # Default base_url: https://api.groq.com/openai/v1
-# llama-3.3-70b-versatile was shut down 2026-08-16. Current free-tier chat+tools
-# model: openai/gpt-oss-20b (also openai/gpt-oss-120b, qwen/qwen3.6-27b).
+# Also on the free/dev catalog: openai/gpt-oss-120b, qwen/qwen3.6-27b
 # List live ids: python -m anywherebot models
 
-# --- Gemini (Google OpenAI-compatible endpoint) ---
+# --- Gemini (Google OpenAI-compatible endpoint, free tier) ---
 # provider: gemini
 # model: gemini-3.6-flash
 # api_key_env: GEMINI_API_KEY
 # Default base_url: https://generativelanguage.googleapis.com/v1beta/openai/
-
-# --- OpenRouter (prefer a :free slug, or the free router) ---
-# provider: openrouter
-# model: openrouter/free
-# api_key_env: OPENROUTER_API_KEY
-# Default base_url: https://openrouter.ai/api/v1
 
 # --- Generic vLLM / llama.cpp / LM Studio ---
 # provider: openai_compat
