@@ -1,0 +1,34 @@
+services:
+  bot:
+    build: .
+    ports:
+      - "8765:8765"
+    volumes:
+      - ./workspace:/app/workspace
+      - ./bot.md:/app/bot.md
+      - ./llm.yaml:/app/llm.yaml
+      - ./skills:/app/skills
+      - ./.anywherebot:/app/.anywherebot
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    environment:
+      GROQ_API_KEY: ${GROQ_API_KEY:-}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY:-}
+      ANYWHEREBOT_PROVIDER: ${ANYWHEREBOT_PROVIDER:-}
+      ANYWHEREBOT_MODEL: ${ANYWHEREBOT_MODEL:-}
+      ANYWHEREBOT_BASE_URL: ${ANYWHEREBOT_BASE_URL:-}
+    # 127.0.0.1 inside the container is not your laptop.
+    # Host Ollama:  ANYWHEREBOT_BASE_URL=http://host.docker.internal:11434/v1
+    # Compose Ollama (profile below): ANYWHEREBOT_BASE_URL=http://ollama:11434/v1
+
+  ollama:
+    profiles: ["ollama"]
+    image: ollama/ollama:latest
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+
+volumes:
+  ollama_data:
